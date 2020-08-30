@@ -17,13 +17,11 @@ module.exports = app => {
 
   app.get('/livros', (req, resp) => {
     const livroDao = new LivroDao(db);
-    livroDao.lista((err, result) => {
-      resp.marko(
-        require('../views/livros/lista/lista.marko'),
-        {
-          livros: result
-        }
-      );
-    });
+    livroDao.lista()
+      .then(livros => resp.marko(
+          require('../views/livros/lista/lista.marko'),
+          { livros }
+        )
+      ).catch(err => console.log(err));
   });
 };
